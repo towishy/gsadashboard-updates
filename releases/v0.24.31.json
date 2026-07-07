@@ -1,0 +1,28 @@
+{
+    "schema":  1,
+    "product":  "GSA Dashboard",
+    "channel":  "stable",
+    "version":  "0.24.31",
+    "tag":  "v0.24.31",
+    "name":  "GSADashboard-0.24.31-release",
+    "generatedAt":  "2026-07-07T06:15:03.0700859Z",
+    "publishedAt":  "2026-07-07T06:15:25.1843172Z",
+    "releaseUrl":  "https://github.com/towishy/gsadashboard/releases/tag/v0.24.31",
+    "source":  "public-manifest",
+    "artifacts":  [
+                      {
+                          "platform":  "windows",
+                          "runtime":  "win-x64",
+                          "fileName":  "GSADashboard-0.24.31-win-x64.zip",
+                          "sizeBytes":  60724903,
+                          "sha256":  "db626c85975da83df224653b9df8874eded14ca31b96de1050cecdbf3778ed35",
+                          "signature":  {
+                                            "signed":  true,
+                                            "timestamped":  true,
+                                            "trusted":  false,
+                                            "testCertificate":  true,
+                                            "status":  "UnknownError"
+                                        }
+                      }
+                  ]
+}
