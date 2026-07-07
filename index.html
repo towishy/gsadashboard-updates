@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GSA Acquisition & Spending Dashboard – Real-time federal acquisition metrics and agency performance." />
+  <title>GSA Dashboard – Federal Acquisition &amp; Spending</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header class="site-header" role="banner">
+  <div class="header-top">
+    <span class="gov-tag">🇺🇸 An official website of the United States Government</span>
+  </div>
+  <div class="header-main">
+    <a href="#" class="header-logo" aria-label="GSA Dashboard Home">
+      <div class="logo-icon" aria-hidden="true">GSA</div>
+      <div class="logo-text">
+        <h1>GSA Dashboard</h1>
+        <span>Federal Acquisition &amp; Spending</span>
+      </div>
+    </a>
+
+    <nav class="header-nav" aria-label="Primary navigation">
+      <a href="#overview" class="active">Overview</a>
+      <a href="#agencies">Agencies</a>
+      <a href="#contracts">Contracts</a>
+      <a href="#reports">Reports</a>
+      <a href="#alerts">Alerts</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-refresh" id="refreshBtn" onclick="refreshDashboard()" aria-label="Refresh dashboard data">
+        ↻ Refresh
+      </button>
+      <div class="user-avatar" title="Analyst User" role="img" aria-label="User: Analyst">AU</div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════
+     MAIN
+════════════════════════════════════════ -->
+<main class="main-content" id="main-content">
+
+  <!-- Alert Banner -->
+  <div class="alert-banner" role="alert" aria-live="polite">
+    <div class="alert-content">
+      <span class="alert-icon">ℹ️</span>
+      <span>
+        <strong>FY2025 Q3 Data Available.</strong>&nbsp;
+        Spending and contract data have been refreshed as of July 2025.
+        <a href="#" style="color:#005ea2;font-weight:600;margin-left:4px;">View report →</a>
+      </span>
+    </div>
+    <button class="alert-dismiss" onclick="dismissAlert(this)" aria-label="Dismiss alert">✕</button>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header" id="overview">
+    <div>
+      <h2>Acquisition &amp; Spending Dashboard</h2>
+      <p>Federal agency procurement performance, contract awards, and budget execution for FY2025</p>
+    </div>
+    <div class="page-controls">
+      <select class="filter-select" aria-label="Select fiscal year">
+        <option selected>FY2025</option>
+        <option>FY2024</option>
+        <option>FY2023</option>
+      </select>
+      <span class="last-updated" id="lastUpdated" aria-live="polite">
+        <span aria-hidden="true">🕐</span> Loading…
+      </span>
+    </div>
+  </div>
+
+  <!-- ── Stat Cards ── -->
+  <section class="stat-cards" aria-label="Key performance indicators">
+
+    <div class="stat-card">
+      <div class="stat-icon" aria-hidden="true">💰</div>
+      <div class="stat-label">Total Spending YTD</div>
+      <div class="stat-value">$628.4B</div>
+      <div class="stat-change up">
+        <span aria-hidden="true">▲</span> 8.3% vs FY2024
+      </div>
+    </div>
+
+    <div class="stat-card green">
+      <div class="stat-icon" aria-hidden="true">📋</div>
+      <div class="stat-label">Active Contracts</div>
+      <div class="stat-value">14,874</div>
+      <div class="stat-change up">
+        <span aria-hidden="true">▲</span> 3.1% vs FY2024
+      </div>
+    </div>
+
+    <div class="stat-card gold">
+      <div class="stat-icon" aria-hidden="true">🏢</div>
+      <div class="stat-label">Participating Agencies</div>
+      <div class="stat-value">87</div>
+      <div class="stat-change neutral">—&nbsp;Same as FY2024</div>
+    </div>
+
+    <div class="stat-card purple">
+      <div class="stat-icon" aria-hidden="true">✅</div>
+      <div class="stat-label">Cumulative Savings</div>
+      <div class="stat-value">$4.8B</div>
+      <div class="stat-change up">
+        <span aria-hidden="true">▲</span> 12.7% vs FY2024
+      </div>
+    </div>
+
+    <div class="stat-card red">
+      <div class="stat-icon" aria-hidden="true">⚠️</div>
+      <div class="stat-label">At-Risk / Delayed</div>
+      <div class="stat-value">17</div>
+      <div class="stat-change down">
+        <span aria-hidden="true">▲</span> 4 more than FY2024
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── Charts Row ── -->
+  <div class="dashboard-grid">
+
+    <!-- Spending Trend Chart -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Monthly Spending Trend</div>
+          <div class="card-subtitle">Federal acquisition spending ($ Billions) by fiscal month</div>
+        </div>
+        <span class="card-badge">FY2023–2025</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="spendingChart" role="img" aria-label="Monthly spending trend chart comparing FY2025, FY2024, and FY2023"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Recent Activity</div>
+          <div class="card-subtitle">Latest acquisition events and updates</div>
+        </div>
+        <a href="#" style="font-size:13px;color:#005ea2;text-decoration:none;font-weight:600;">View all</a>
+      </div>
+      <div class="card-body" style="padding-top:0">
+        <ul class="activity-list" id="activityList" aria-label="Recent activity feed"></ul>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Second Charts Row ── -->
+  <div class="dashboard-grid-3">
+
+    <!-- Spending by Category (Donut) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Spending by Category</div>
+          <div class="card-subtitle">FY2025 obligation by contract type</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="categoryChart" role="img" aria-label="Donut chart showing spending distribution by contract category"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Breakdown -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Category Breakdown</div>
+          <div class="card-subtitle">Obligation totals ($ Billions)</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="mini-stats" id="categoryBreakdown" aria-label="Category spending breakdown"></div>
+      </div>
+    </div>
+
+    <!-- Agency Performance (Donut) -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Agency Performance</div>
+          <div class="card-subtitle">Overall acquisition status distribution</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="performanceChart" role="img" aria-label="Donut chart showing percentage of agencies on-track, at-risk, or delayed"></canvas>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Agency Table ── -->
+  <div class="card" id="agencies">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Agency Performance Overview</div>
+        <div class="card-subtitle">Budget execution, contract counts, and savings by agency</div>
+      </div>
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input
+          type="search"
+          class="search-input"
+          placeholder="Search agencies…"
+          aria-label="Search agencies"
+          oninput="handleSearch(event)"
+        />
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div style="padding: 0 22px;">
+      <div class="tab-nav" role="tablist" aria-label="Agency data views">
+        <button class="tab-btn active" data-tab="tab-all" onclick="switchTab('tab-all')" role="tab" aria-selected="true">All Agencies</button>
+        <button class="tab-btn" data-tab="tab-ontrack" onclick="switchTab('tab-ontrack')" role="tab" aria-selected="false">On Track</button>
+        <button class="tab-btn" data-tab="tab-risk" onclick="switchTab('tab-risk')" role="tab" aria-selected="false">Needs Attention</button>
+      </div>
+    </div>
+
+    <!-- Tab Panel: All Agencies -->
+    <div id="tab-all" class="tab-panel active" role="tabpanel">
+      <div class="data-table-wrapper">
+        <table aria-label="Federal agency acquisition performance table">
+          <thead>
+            <tr>
+              <th class="sortable" data-col="name" onclick="handleSort('name')">
+                Agency <span class="sort-icon">⇅</span>
+              </th>
+              <th class="text-right">FY2025 Budget</th>
+              <th>Budget Utilization</th>
+              <th>Status</th>
+              <th class="text-right sortable" data-col="contracts" onclick="handleSort('contracts')">
+                Contracts <span class="sort-icon">⇅</span>
+              </th>
+              <th class="text-right sortable" data-col="savings" onclick="handleSort('savings')">
+                Savings <span class="sort-icon">⇅</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="agencyTableBody">
+            <!-- Populated by app.js -->
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination" aria-label="Table pagination">
+        <span id="pageInfo" aria-live="polite"></span>
+        <div class="pagination-controls" id="paginationControls"></div>
+      </div>
+    </div>
+
+    <!-- Tab Panel: On Track -->
+    <div id="tab-ontrack" class="tab-panel" role="tabpanel">
+      <div style="padding:32px;text-align:center;color:#71767a">
+        <p style="font-size:32px;margin-bottom:8px">✅</p>
+        <p style="font-weight:700;font-size:16px;color:#1b2a4a;margin-bottom:6px">52 agencies on track</p>
+        <p style="font-size:14px">All acquisition milestones and budget targets are being met on schedule.</p>
+      </div>
+    </div>
+
+    <!-- Tab Panel: Needs Attention -->
+    <div id="tab-risk" class="tab-panel" role="tabpanel">
+      <div style="padding:32px;text-align:center;color:#71767a">
+        <p style="font-size:32px;margin-bottom:8px">⚠️</p>
+        <p style="font-weight:700;font-size:16px;color:#1b2a4a;margin-bottom:6px">17 agencies need attention</p>
+        <p style="font-size:14px">These agencies have reported acquisition delays or elevated risk factors. Contact the GSA Acquisition Office for assistance.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>U.S. General Services Administration</strong>
+      1800 F Street, NW, Washington, DC 20405<br />
+      Acquisition &amp; Spending Dashboard · FY2025
+    </div>
+    <div class="footer-links">
+      <a href="#">Accessibility</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">FOIA</a>
+      <a href="#">No FEAR Act</a>
+      <a href="#">Inspector General</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Data sourced from USASpending.gov · Updated quarterly</span>
+    <span>Built with ♥ by GSA Office of Digital Infrastructure</span>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
