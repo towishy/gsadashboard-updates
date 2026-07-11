@@ -1,0 +1,10 @@
+{
+  "schema": 2,
+  "product": "GSA Dashboard",
+  "channel": "stable",
+  "platform": "windows",
+  "version": "0.24.47",
+  "tag": "v0.24.47",
+  "publishedAt": "2026-07-11T05:20:47.4549941Z",
+  "source": "public-manifest"
+}
