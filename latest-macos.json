@@ -1,23 +1,10 @@
 {
-  "schema": 1,
+  "schema": 2,
   "product": "GSA Dashboard",
   "channel": "stable",
   "platform": "macos",
   "version": "0.24.34",
   "tag": "v0.24.34",
-  "name": "GSADashboard-0.24.34-mac-arm64",
-  "generatedAt": "07/07/2026 07:07:55",
-  "publishedAt": "2026-07-07T07:07:55.3784160Z",
-  "releaseUrl": "https://github.com/towishy/gsadashboard-updates/releases/tag/v0.24.34",
-  "source": "public-manifest",
-  "artifacts": [
-    {
-      "platform": "macos",
-      "runtime": "mac-arm64-electron",
-      "fileName": "GSADashboard-0.24.34-mac-arm64.dmg",
-      "sizeBytes": 394974586,
-      "sha256": "18a945b1977a5fbad40c50036e4171ea82df44629fda8ca2f4cf2d55d89e6a38",
-      "downloadUrl": "https://github.com/towishy/gsadashboard-updates/releases/download/v0.24.34/GSADashboard-0.24.34-mac-arm64.dmg"
-    }
-  ]
+  "publishedAt": "2026-07-11T05:20:57.1011254Z",
+  "source": "public-manifest"
 }
