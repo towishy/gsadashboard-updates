@@ -3,8 +3,8 @@
   "product": "GSA Dashboard",
   "channel": "stable",
   "platform": "windows",
-  "version": "0.24.60",
-  "tag": "v0.24.60",
-  "publishedAt": "2026-07-14T15:42:56.8459207Z",
+  "version": "0.24.63",
+  "tag": "v0.24.63",
+  "publishedAt": "2026-07-15T02:09:55.4273496Z",
   "source": "public-manifest"
 }
